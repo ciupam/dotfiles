@@ -1,0 +1,10 @@
+#!/bin/sh
+path=$(pwd)
+
+ln -sf $path/.zshrc $HOME/.zshrc
+ln -sf $path/.zshenv $HOME/.zshenv
+
+[ ! -d $HOME/.config ] && mkdir $HOME/.config
+
+[ -d $HOME/.config/nvim ] && rm -rf $HOME/.config/nvim
+ln -sf $path/config/nvim $HOME/.config/nvim
