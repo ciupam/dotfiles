@@ -22,3 +22,5 @@ ln -sf $path/config/nvim $HOME/.config/nvim
 
 [ -d $HOME/.local/share/fonts ] && rm -r $HOME/.local/share/fonts
 ln -sf $path/.local/share/fonts $HOME/.local/share/fonts
+
+ln -sf $path/config/wall.png $HOME/.config/wall.png
