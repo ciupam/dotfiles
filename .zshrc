@@ -31,3 +31,6 @@ bindkey "^[[B" history-beginning-search-forward-end
 source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
 source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null
 source $HOME/.zsh/zsh-nvm/zsh-nvm.plugin.zsh 2>/dev/null
+
+fpath=($HOME/.zsh/zsh-autocompletions/src $fpath)
+rm -f ~/.zcompdump; compinit
