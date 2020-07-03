@@ -13,5 +13,12 @@ git clone https://github.com/zsh-users/zsh-autosuggestions.git $HOME/.zsh/zsh-au
 git clone https://github.com/lukechilds/zsh-nvm.git $HOME/.zsh/zsh-nvm
 git clone https://github.com/zsh-users/zsh-completions.git $HOME/.zsh/zsh-completions
 
+[ ! -d $HOME/.config/VSCodium ] && mkdir -p $HOME/.config/VSCodium/User
+[ ! -d $HOME/.config/VSCodium/User ] && mkdir $HOME/.config/VSCodium/User
+ln -sf $path/config/VSCodium/settings.json $HOME/.config/VSCodium/User/settings.json
+
 [ -d $HOME/.config/nvim ] && rm -rf $HOME/.config/nvim
 ln -sf $path/config/nvim $HOME/.config/nvim
+
+[ -d $HOME/.local/share/fonts ] && rm -r $HOME/.local/share/fonts
+ln -sf $path/.local/share/fonts $HOME/.local/share/fonts
