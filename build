@@ -3,6 +3,7 @@ path=$(pwd)
 
 ln -sf $path/.zshrc $HOME/.zshrc
 ln -sf $path/.zshenv $HOME/.zshenv
+ln -sf $path/.xinitrc $HOME/.xinitrc
 
 [ ! -d $HOME/.config ] && mkdir $HOME/.config
 
