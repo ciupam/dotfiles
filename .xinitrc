@@ -1,2 +1,2 @@
-nitrogen --set-auto ~/.config/wall.png &
+nitrogen --restore &
 exec dwm

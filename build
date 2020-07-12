@@ -4,6 +4,7 @@ path=$(pwd)
 ln -sf $path/.zshrc $HOME/.zshrc
 ln -sf $path/.zshenv $HOME/.zshenv
 ln -sf $path/.xinitrc $HOME/.xinitrc
+ln -sf $path/.zprofile $HOME/.zprofile
 
 [ ! -d $HOME/.config ] && mkdir $HOME/.config
 
