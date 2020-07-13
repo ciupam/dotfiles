@@ -3,7 +3,7 @@
     "editor.fontSize": 16,
     "editor.minimap.enabled": false,
     "editor.fontFamily": "'Fira Code'",
-    "editor.fontLigratures": true,
+    "editor.fontLigatures": true,
     "editor.cursorBlinking": "solid",
     "editor.cursorWidth": 2,
     "javascript.updateImportsOnFileMove.enabled": "always"
