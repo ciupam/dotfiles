@@ -1,2 +1,0 @@
-nitrogen --restore &
-exec dwm
