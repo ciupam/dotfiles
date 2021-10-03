@@ -16,8 +16,8 @@
 
 (setq package-archives '(("elpa" . "https://elpa.gnu.org/packages/")
                          ("melpa" . "https://melpa.org/packages/")
-			 ("melpa-stable" . "https://stable.melpa.org/packages/")
-			 ("org" . "https://orgmode.org/elpa/")))
+			                   ("melpa-stable" . "https://stable.melpa.org/packages/")
+			                   ("org" . "https://orgmode.org/elpa/")))
 
 (package-initialize)
 
@@ -35,6 +35,11 @@
 (column-number-mode)
 (global-display-line-numbers-mode t)
 (setq-default indent-tabs-mode nil)
+(setq-default tab-width 2)
+
+(eval-after-load 'grep
+  '(progn
+     (add-to-list 'grep-find-ignored-directories "node_modules")))
 
 ;; Backup and autosave files
 
@@ -52,7 +57,19 @@
       auto-save-file-name-transforms
       `((".*" ,(expand-file-name "tmp/auto-saves/" user-emacs-directory) t)))
 
+;; Files created by packages
+;; Could be prob fixed by pck "no-littering"
 
+(setq projectile-known-projects-file
+      (expand-file-name "tmp/projectile-bookmarks.eld" user-emacs-directory)
+      lsp-session-file (expand-file-name "tmp/.lsp-session-v1" user-emacs-directory))
+
+;; Keep customization settings in a temporary file (thanks Ambrevar!)
+(setq custom-file
+      (if (boundp 'server-socket-dir)
+          (expand-file-name "custom.el" server-socket-dir)
+        (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
+(load custom-file t)
 
 ;; Disable line numbers for some modes
 
@@ -61,9 +78,19 @@
                 eshell-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
+;; FIXME: mby exwm will solve the problem
+;; path currently is exported in .bashrc so its kinda hacky
+
+(use-package exec-path-from-shell)
+(exec-path-from-shell-initialize)
+
+;; Ivy packages
+
 (use-package counsel
   :bind (("M-x" . counsel-M-x)
          ("C-x b" . counsel-ibuffer)
+         ;; Don't need listing buffers
+         ("C-x C-b" . counsel-ibuffer)
          ("C-x C-f" . counsel-find-file)
          :map minibuffer-local-map
          ("C-r" . 'counsel-minibuffer-history)))
@@ -128,8 +155,8 @@
   :bind-keymap
   ("C-c p" . projectile-command-map)
   :init
-  (when (file-directory-p "~/dev")
-    (setq projectile-project-search-path '("~/dev" "~/repos")))
+  (when (file-directory-p "~/bin")
+    (setq projectile-project-search-path '("~/bin")))
   (setq projectile-switch-project-action #'projectile-dired))
 
 ;; Evil
@@ -161,16 +188,23 @@
 ;; (use-package evil-magit
 ;;   :after magit)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(magit projectile which-key use-package rainbow-delimiters ivy-rich helpful exwm doom-themes doom-modeline counsel command-log-mode)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;; Language servers
+
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :config
+  (lsp-enable-which-key-integration t))
+
+;; TypeScript
+
+(use-package typescript-mode
+  :mode "\\.ts\\'"
+  :hook (typescript-mode . lsp-deferred)
+  :config
+  (setq typescript-indent-level 2))
+
+;; Disabling legacy stuff seems to work
+
+(remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
