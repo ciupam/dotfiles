@@ -195,8 +195,8 @@
   :init
   (setq lsp-keymap-prefix "C-c l")
   :config
-  (lsp-enable-which-key-integration t))
-
+  (lsp-enable-which-key-integration t)
+  :hook ((python-mode) . lsp))
 ;; TypeScript
 
 (use-package typescript-mode
