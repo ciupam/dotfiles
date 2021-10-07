@@ -16,8 +16,8 @@
 
 (setq package-archives '(("elpa" . "https://elpa.gnu.org/packages/")
                          ("melpa" . "https://melpa.org/packages/")
-			                   ("melpa-stable" . "https://stable.melpa.org/packages/")
-			                   ("org" . "https://orgmode.org/elpa/")))
+			 ("melpa-stable" . "https://stable.melpa.org/packages/")
+			 ("org" . "https://orgmode.org/elpa/")))
 
 (package-initialize)
 
@@ -83,6 +83,17 @@
 
 (use-package exec-path-from-shell)
 (exec-path-from-shell-initialize)
+
+;; Autopair
+
+(add-to-list 'load-path "~/.emacs.d/lisp/autopair") ;; comment if autopair.el is in standard load path 
+(require 'autopair)
+(autopair-global-mode) ;; enable autopair in all buffers
+
+;; Move lines vscode style
+
+(use-package move-text)
+(move-text-default-bindings)
 
 ;; Ivy packages
 
