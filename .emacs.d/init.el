@@ -10,14 +10,15 @@
 (set-face-attribute 'default nil :font "Fira Code Retina" :height 130)
 
 ;; Make ESC quit prompts
+
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 (require 'package)
 
 (setq package-archives '(("elpa" . "https://elpa.gnu.org/packages/")
                          ("melpa" . "https://melpa.org/packages/")
-			 ("melpa-stable" . "https://stable.melpa.org/packages/")
-			 ("org" . "https://orgmode.org/elpa/")))
+			                   ("melpa-stable" . "https://stable.melpa.org/packages/")
+			                   ("org" . "https://orgmode.org/elpa/")))
 
 (package-initialize)
 
@@ -36,6 +37,8 @@
 (global-display-line-numbers-mode t)
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
+
+;; Ignore directories using projectile search grep
 
 (eval-after-load 'grep
   '(progn
@@ -61,10 +64,10 @@
 ;; Could be prob fixed by pck "no-littering"
 
 (setq projectile-known-projects-file
-      (expand-file-name "tmp/projectile-bookmarks.eld" user-emacs-directory)
-      lsp-session-file (expand-file-name "tmp/.lsp-session-v1" user-emacs-directory))
+      (expand-file-name "tmp/projectile-bookmarks.eld" user-emacs-directory))
 
-;; Keep customization settings in a temporary file (thanks Ambrevar!)
+;; Keep customization settings in a temporary file
+
 (setq custom-file
       (if (boundp 'server-socket-dir)
           (expand-file-name "custom.el" server-socket-dir)
@@ -170,52 +173,90 @@
     (setq projectile-project-search-path '("~/bin")))
   (setq projectile-switch-project-action #'projectile-dired))
 
-;; Evil
-
-;; (use-package evil
-;;   :init
-;;   (setq evil-want-integration t)
-;;   (setq evil-want-keybinding nil)
-;;   (setq evil-want-C-u-scroll t)
-;;   (setq evil-want-C-i-jump nil)
-;;   :config
-;;   (evil-mode 1)
-;;   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-;;   (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
-
-;;   ;; Use visual line motions even outside of visual-line-mode buffers
-;;   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-;;   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
-
-;;   (evil-set-initial-state 'message-buffer-mode 'normal)
-;;   (evil-set-initial-state 'dashboard-mode 'normal))
+;; Magit
 
 (use-package magit
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
-;; Evil git
+;; Eglot
 
-;; (use-package evil-magit
-;;   :after magit)
+(use-package eglot)
 
-;; Language servers
+(add-hook 'js-mode-hook 'eglot-ensure)
+(add-hook 'python-mode-hook 'eglot-ensure)
 
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
-  :init
-  (setq lsp-keymap-prefix "C-c l")
-  :config
-  (lsp-enable-which-key-integration t)
-  :hook ((python-mode) . lsp))
-;; TypeScript
+(defclass eglot-deno (eglot-lsp-server) ()
+  :documentation "A custom class for deno lsp.")
 
-(use-package typescript-mode
-  :mode "\\.ts\\'"
-  :hook (typescript-mode . lsp-deferred)
-  :config
-  (setq typescript-indent-level 2))
+(cl-defmethod eglot-initialization-options ((server eglot-deno))
+  "Passes through required deno initialization options"
+  (list :enable t
+        :lint t))
 
-;; Disabling legacy stuff seems to work
+(add-to-list 'eglot-server-programs '((js-mode typescript-mode) . (eglot-deno "deno" "lsp")))
 
-(remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
+
+;; Hydra
+
+(use-package hydra)
+
+(defhydra hydra-zoom ()
+  "zoom"
+  ("g" text-scale-increase "in")
+  ("l" text-scale-decrease "out"))
+
+(global-set-key (kbd "C-c z") 'hydra-zoom/body)
+
+(winner-mode 1)
+(defhydra hydra-window (global-map
+                        "C-u"
+                        :timeout 0)
+  ("h" windmove-left)
+  ("j" windmove-up)
+  ("k" windmove-down)
+  ("l" windmove-right)
+  ("u" winner-undo)
+  ("U" winner-redo))
+
+;; (global-set-key (kbd "C-c w") 'hydra-window/body)
+
+(defhydra hydra-region (global-map
+                        "C-c r"
+                        :timeout 0)
+  ("c" comment-region)
+  ("u" uncomment-region))
+
+
+(defhydra hydra-buffer-menu (:color pink
+                             :hint nil)
+  "
+^Mark^             ^Unmark^           ^Actions^          ^Search
+^^^^^^^^-----------------------------------------------------------------
+_m_: mark          _u_: unmark        _x_: execute       _R_: re-isearch
+_s_: save          _U_: unmark up     _b_: bury          _I_: isearch
+_d_: delete        ^ ^                _g_: refresh       _O_: multi-occur
+_D_: delete up     ^ ^                _T_: files only: % -28`Buffer-menu-files-only
+_~_: modified
+"
+  ("m" Buffer-menu-mark)
+  ("u" Buffer-menu-unmark)
+  ("U" Buffer-menu-backup-unmark)
+  ("d" Buffer-menu-delete)
+  ("D" Buffer-menu-delete-backwards)
+  ("s" Buffer-menu-save)
+  ("~" Buffer-menu-not-modified)
+  ("x" Buffer-menu-execute)
+  ("b" Buffer-menu-bury)
+  ("g" revert-buffer)
+  ("T" Buffer-menu-toggle-files-only)
+  ("O" Buffer-menu-multi-occur :color blue)
+  ("I" Buffer-menu-isearch-buffers :color blue)
+  ("R" Buffer-menu-isearch-buffers-regexp :color blue)
+  ("c" nil "cancel")
+  ("v" Buffer-menu-select "select" :color blue)
+  ("o" Buffer-menu-other-window "other-window" :color blue)
+  ("q" quit-window "quit" :color blue))
+
+(define-key Buffer-menu-mode-map "." 'hydra-buffer-menu/body)
+
