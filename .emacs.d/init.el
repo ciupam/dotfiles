@@ -38,11 +38,16 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
 
+;; First try to indent the current line, and if the line
+;; was already indented, then try `completion-at-point'
+(setq tab-always-indent 'complete)
+
 ;; Ignore directories using projectile search grep
 
 (eval-after-load 'grep
   '(progn
-     (add-to-list 'grep-find-ignored-directories "node_modules")))
+     (add-to-list 'grep-find-ignored-directories "node_modules")
+     (add-to-list 'grep-find-ignored-directories ".mypy_cache")))
 
 ;; Backup and autosave files
 
@@ -65,6 +70,7 @@
 
 (setq projectile-known-projects-file
       (expand-file-name "tmp/projectile-bookmarks.eld" user-emacs-directory))
+
 
 ;; Keep customization settings in a temporary file
 
@@ -185,16 +191,22 @@
 
 (add-hook 'js-mode-hook 'eglot-ensure)
 (add-hook 'python-mode-hook 'eglot-ensure)
+(add-hook 'typescript-mode 'eglot-ensure)
 
-(defclass eglot-deno (eglot-lsp-server) ()
-  :documentation "A custom class for deno lsp.")
+(use-package flycheck
+  :init (global-flycheck-mode))
 
-(cl-defmethod eglot-initialization-options ((server eglot-deno))
-  "Passes through required deno initialization options"
-  (list :enable t
-        :lint t))
+(add-hook 'after-init-hook #'global-flycheck-mode)
 
-(add-to-list 'eglot-server-programs '((js-mode typescript-mode) . (eglot-deno "deno" "lsp")))
+;; (defclass eglot-deno (eglot-lsp-server) ()
+;;   :documentation "A custom class for deno lsp.")
+
+;; (cl-defmethod eglot-initialization-options ((server eglot-deno))
+;;   "Passes through required deno initialization options"
+;;   (list :enable t
+;;         :lint t))
+
+;; (add-to-list 'eglot-server-programs '((js-mode typescript-mode) . (eglot-deno "deno" "lsp")))
 
 
 ;; Hydra
@@ -226,6 +238,12 @@
                         :timeout 0)
   ("c" comment-region)
   ("u" uncomment-region))
+
+(defhydra hydra-magit (global-map
+                       "C-c g"
+                       :timeout 0)
+  ("g" magit-status)
+  ("b" magit-blame))
 
 
 (defhydra hydra-buffer-menu (:color pink
@@ -260,3 +278,21 @@ _~_: modified
 
 (define-key Buffer-menu-mode-map "." 'hydra-buffer-menu/body)
 
+;;; using ido find file in tag files
+;; (defun tags-extra-get-all-tags-files ()
+;;   "Return all, fully qualified, file names."
+;;   (save-excursion
+;;     (let ((first-time t)
+;;           (res nil))
+;;       (while (visit-tags-table-buffer (not first-time))
+;;         (setq first-time nil)
+;;         (setq res
+;;               (append res (mapcar 'expand-file-name (tags-table-files)))))
+;;       res)))
+
+;; (defun ido-find-file-in-tag-files ()
+;;   (interactive)
+;;   (find-file
+;;    (expand-file-name
+;;     (ido-completing-read
+;;      "Files: " (tags-extra-get-all-tags-files) nil t))))
