@@ -36,7 +36,7 @@
 (column-number-mode)
 (global-display-line-numbers-mode t)
 (setq-default indent-tabs-mode nil)
-(setq-default tab-width 2)
+(setq-default tab-width 4)
 
 ;; First try to indent the current line, and if the line
 ;; was already indented, then try `completion-at-point'
@@ -95,7 +95,7 @@
 
 ;; Autopair
 
-(add-to-list 'load-path "~/.emacs.d/lisp/autopair") ;; comment if autopair.el is in standard load path 
+(add-to-list 'load-path "~/.emacs.d/lisp/autopair") ;; comment if autopair.el is in standard load path
 (require 'autopair)
 (autopair-global-mode) ;; enable autopair in all buffers
 
@@ -191,10 +191,26 @@
 
 (add-hook 'js-mode-hook 'eglot-ensure)
 (add-hook 'python-mode-hook 'eglot-ensure)
-(add-hook 'typescript-mode 'eglot-ensure)
+(add-hook 'typescript-mode-hook 'eglot-ensure)
+(add-hook 'c++-mode-hook 'eglot-ensure)
+(add-hook 'c-mode-hook 'eglot-ensure)
+
+;; cpp stuff
+
+(defun my-c++-mode-hook ()
+  (setq c-basic-offset 4)
+  (c-set-offset 'substatement-open 0))
+(add-hook 'c++-mode-hook 'my-c++-mode-hook)
+
+(use-package clang-format
+  :init
+  (fset 'c-indent-line-or-region 'clang-format-region))
+;;clang-format-region))
+;;(setq clang-format-style "file")
 
 (use-package flycheck
-  :init (global-flycheck-mode))
+  :init (global-flycheck-mode)
+  (setq flycheck-flake8rc ".flake8"))
 
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
