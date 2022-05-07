@@ -125,7 +125,7 @@
   :init (doom-modeline-mode 1))
 
 (use-package doom-themes
-  :init (load-theme 'doom-gruvbox t))
+  :init (load-theme 'doom-old-hope t))
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
@@ -149,6 +149,12 @@
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
+;; Python
+;; (use-package python-mode
+;;   :ensure nil
+;;   :custom
+;;   (python-shell-interpreter "python3"))
+
 ;; Eglot
 (use-package eglot)
 (add-hook 'js-mode-hook 'eglot-ensure)
@@ -169,11 +175,27 @@
 ;;clang-format-region))
 ;;(setq clang-format-style "file")
 
-(use-package flycheck
-  :init (global-flycheck-mode)
-  (setq flycheck-flake8rc ".flake8"))
+;; (use-package flycheck
+;;   :init (global-flycheck-mode)
+;;   (setq flycheck-flake8rc ".flake8"))
+;; Configure Flymake for Python
+;; (add-hook 'after-init-hook #'global-flycheck-mode)
 
-(add-hook 'after-init-hook #'global-flycheck-mode)
+(when (load "flymake" t)
+  (defun flymake-pylint-init ()
+    (let* ((temp-file (flymake-init-create-temp-buffer-copy
+                       'flymake-create-temp-inplace))
+           (local-file (file-relative-name
+                        temp-file
+                        (file-name-directory buffer-file-name))))
+      (list "epylint" (list local-file))))
+  (add-to-list 'flymake-allowed-file-name-masks
+               '("\\.py\\'" flymake-pylint-init)))
+
+;; Disable legacy flymake
+(remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
+;; Set as a minor mode for Python
+(add-hook 'python-mode-hook '(lambda () (flymake-mode)))
 
 ;; Hydra
 (use-package hydra)
