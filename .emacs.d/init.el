@@ -104,22 +104,6 @@
   :hook (prog-mode . rainbow-delimiters-mode))
 
 
-(use-package projectile
-  :diminish projectile-mode
-  :config (projectile-mode)
-  :custom ((projectile-completion-system 'ivy))
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
-  :init
-  (when (file-directory-p "~/bin")
-    (setq projectile-project-search-path '("~/bin")))
-  (setq projectile-switch-project-action #'projectile-dired)
-  (setq projectile-known-projects-file
-        (expand-file-name "tmp/projectile-bookmarks.eld" user-emacs-directory)))
-(use-package counsel-projectile
-  :config (counsel-projectile-mode))
-
-
 (use-package magit
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
@@ -143,8 +127,9 @@
          (yaml-mode . lsp-deferred)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-deferred)
-  :config
-  (setq lsp-pylsp-plugins-pylint-enabled t))
+  :config (progn
+            (setq lsp-pylsp-plugins-pylint-enabled t
+                  lsp-prefer-flymake t)))
 (use-package lsp-ui :commands lsp-ui-mode)
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
