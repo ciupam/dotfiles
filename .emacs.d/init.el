@@ -125,7 +125,8 @@
          (js-mode . lsp-deferred)
          (typescript-mode . lsp-deferred)
          (yaml-mode . lsp-deferred)
-         (lsp-mode . lsp-enable-which-key-integration))
+         (lsp-mode . lsp-enable-which-key-integration)
+         (c++-mode . lsp-deferred))
   :commands (lsp lsp-deferred)
   :config (progn
             (setq lsp-pylsp-plugins-pylint-enabled t
