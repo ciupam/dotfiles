@@ -94,12 +94,6 @@
   (ivy-mode 1))
 
 
-(use-package doom-modeline
-  :init (doom-modeline-mode 1))
-(use-package doom-themes
-  :init (load-theme 'doom-old-hope t))
-
-
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
@@ -107,14 +101,6 @@
 (use-package magit
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
-
-;; EGLOT
-;; (use-package eglot)
-;; (add-hook 'js-mode-hook 'eglot-ensure)
-;; (add-hook 'python-mode-hook 'eglot-ensure)
-;; (add-hook 'typescript-mode-hook 'eglot-ensure)
-;; (add-hook 'c++-mode-hook 'eglot-ensure)
-;; (add-hook 'c-mode-hook 'eglot-ensure)
 
 
 (use-package lsp-mode
