@@ -115,6 +115,8 @@
   :commands (lsp lsp-deferred)
   :config (progn
             (setq lsp-pylsp-plugins-pylint-enabled t
+                  lsp-pylsp-plugins-pycodestyle-enabled t
+                  lsp-pylsp-plugins-yapf-enabled t
                   lsp-prefer-flymake t)))
 (use-package lsp-ui :commands lsp-ui-mode)
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
@@ -127,42 +129,11 @@
   :custom
   (python-shell-interpreter "python3"))
 
+
 (use-package yaml-mode)
 
 
 (use-package dap-mode)
-
-;; CPP
-;; (defun my-c++-mode-hook ()
-;;   (setq c-basic-offset 4)
-;;   (c-set-offset 'substatement-open 0))
-;; (add-hook 'c++-mode-hook 'my-c++-mode-hook)
-;; (use-package clang-format
-;;   :init
-;;   (fset 'c-indent-line-or-region 'clang-format-region))
-;; clang-format-region))
-;; (setq clang-format-style "file")
-
-;; FLYCHECK
-;; (use-package flycheck
-;;   :init (global-flycheck-mode)
-;;   (setq flycheck-flake8rc ".flake8"))
-;; Configure Flymake for Python
-;; (add-hook 'after-init-hook #'global-flycheck-mode)
-
-;; FLYMAKE
-(when (load "flymake" t)
-  (defun flymake-pylint-init ()
-    (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                       'flymake-create-temp-inplace))
-           (local-file (file-relative-name
-                        temp-file
-                        (file-name-directory buffer-file-name))))
-      (list "epylint" (list local-file))))
-  (add-to-list 'flymake-allowed-file-name-masks
-               '("\\.py\\'" flymake-pylint-init)))
-(remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
-(add-hook 'python-mode-hook '(lambda () (flymake-mode)))
 
 
 (use-package hydra)
