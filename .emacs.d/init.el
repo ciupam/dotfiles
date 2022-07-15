@@ -17,10 +17,8 @@
       (expand-file-name "tmp/auto-saves/sessions/" user-emacs-directory)
       auto-save-file-name-transforms
       `((".*" ,(expand-file-name "tmp/auto-saves/" user-emacs-directory) t)))
-(setq custom-file
-      (if (boundp 'server-socket-dir)
-          (expand-file-name "custom.el" server-socket-dir)
-        (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
+(setq use-dialog-box nil)
+(setq global-auto-revert-non-file-buffers t)
 
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
@@ -29,7 +27,8 @@
 (menu-bar-mode -1)
 (column-number-mode)
 (winner-mode 1)
-(global-display-line-numbers-mode t)
+(global-display-line-numbers-mode 1)
+(global-auto-revert-mode 1)
 (dolist (mode '(org-mode-hook
                 term-mode-hook
                 treemacs-mode-hook
@@ -40,7 +39,27 @@
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (add-to-list 'load-path "~/.emacs.d/lisp")
 (make-directory (expand-file-name "tmp/auto-saves/" user-emacs-directory) t)
-(load custom-file t)
+
+
+(setq custom-file
+      (if (boundp 'server-socket-dir)
+          (expand-file-name "custom.el" server-socket-dir)
+        (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
+(load custom-file 'noerror 'nomessage)
+
+
+(recentf-mode 1)
+(setq recentf-max-menu-items 25)
+(setq recentf-max-saved-items 25)
+(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+
+
+;; Save what you enter into minibuffer prompts
+(setq history-length 25)
+(savehist-mode 1)
+
+
+(save-place-mode 1)
 
 
 (require 'package)
@@ -123,17 +142,23 @@
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 
 
+(use-package dap-mode
+  :config
+  (setq dap-auto-configure-features '(sessions locals controls tooltip)))
+
+
 (use-package python-mode
   :ensure t
   :hook (python-mode . lsp-deferred)
   :custom
-  (python-shell-interpreter "python3"))
+  (python-shell-interpreter "python3")
+  (dap-python-executable "python3")
+  (dap-python-debugger 'debugpy))
+
+(require 'dap-python)
 
 
 (use-package yaml-mode)
-
-
-(use-package dap-mode)
 
 
 (use-package hydra)
