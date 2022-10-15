@@ -1,21 +1,21 @@
-call plug#begin('~/.local/share/nvim/plugged')
+"" call plug#begin('~/.local/share/nvim/plugged')
 
- " Themes
-  Plug 'vim-airline/vim-airline'
-  Plug 'vim-airline/vim-airline-themes'
-  Plug 'tomasiser/vim-code-dark'
+""  " Themes
+""   Plug 'vim-airline/vim-airline'
+""   Plug 'vim-airline/vim-airline-themes'
+""   Plug 'tomasiser/vim-code-dark'
 
-  " Fuzzy find
-  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-  Plug 'junegunn/fzf.vim'
+""   " Fuzzy find
+""   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+""   Plug 'junegunn/fzf.vim'
 
-call plug#end()
+"" call plug#end()
 
 " Default settings
 syntax on
 set encoding=utf-8
-set termguicolors
-colorscheme codedark
+" set termguicolors
+" colorscheme codedark
 set number relativenumber
 set signcolumn=yes
 set mouse=a
@@ -33,10 +33,10 @@ set expandtab
 set cursorline
 
 " Fzf mappings
-nnoremap <silent> <Leader>s :call fzf#run({
-\   'down': '40%',
-\   'sink': 'botright split' })<CR>
+"" nnoremap <silent> <Leader>s :call fzf#run({
+"" \   'down': '40%',
+"" \   'sink': 'botright split' })<CR>
 
-nnoremap <silent> <Leader>v :call fzf#run({
-\   'right': winwidth('.') / 2,
-\   'sink': 'vertical botright split' })<CR>
+"" nnoremap <silent> <Leader>v :call fzf#run({
+"" \   'right': winwidth('.') / 2,
+"" \   'sink': 'vertical botright split' })<CR>
