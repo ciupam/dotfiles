@@ -133,7 +133,6 @@
   :hook (
          (js-mode . lsp-deferred)
          (typescript-mode . lsp-deferred)
-         (yaml-mode . lsp-deferred)
          (lsp-mode . lsp-enable-which-key-integration)
          (c++-mode . lsp-deferred))
   :commands (lsp lsp-deferred)
@@ -162,15 +161,6 @@
 
 (require 'dap-python)
 
-
-(use-package yaml-mode)
-
-
-(use-package hydra)
-(defhydra hydra-window
-  (global-map "C-u" :timeout 0)
-  ("u" winner-undo)
-  ("U" winner-redo))
 
 ;;;
 (provide 'init)
