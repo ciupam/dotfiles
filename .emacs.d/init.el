@@ -20,13 +20,19 @@
 (setq use-dialog-box nil)
 (setq global-auto-revert-non-file-buffers t)
 
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
+(if (display-graphic-p)
+    (progn
+      (scroll-bar-mode -1)
+      (tool-bar-mode -1)
+      (set-fringe-mode 10)
+      (set-face-attribute 'default nil :font "Fira Code Retina" :height 150))
+  (xterm-mouse-mode 1)
+  (global-set-key [mouse-4] 'scroll-down-line)
+  (global-set-key [mouse-5] 'scroll-up-line))
+
 (tooltip-mode -1)
-(set-fringe-mode 10)
 (menu-bar-mode -1)
 (column-number-mode)
-(winner-mode 1)
 (global-display-line-numbers-mode 1)
 (global-auto-revert-mode 1)
 (dolist (mode '(org-mode-hook
@@ -35,7 +41,6 @@
                 eshell-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
-(set-face-attribute 'default nil :font "Fira Code Retina" :height 130)
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (add-to-list 'load-path "~/.emacs.d/lisp")
 (make-directory (expand-file-name "tmp/auto-saves/" user-emacs-directory) t)
