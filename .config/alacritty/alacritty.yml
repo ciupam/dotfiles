@@ -86,7 +86,7 @@ font:
   italics:
     family: JetBrains Mono
     style: Italic
-  size: 16.0
+  size: 15.0
 
 # Colors (Horizon Dark)
 colors:
