@@ -134,13 +134,15 @@
          (js-mode . lsp-deferred)
          (typescript-mode . lsp-deferred)
          (lsp-mode . lsp-enable-which-key-integration)
+         (rustic-mode . lsp-deferred)
          (c++-mode . lsp-deferred))
   :commands (lsp lsp-deferred)
   :config (progn
             (setq lsp-pylsp-plugins-pylint-enabled t
                   lsp-pylsp-plugins-pycodestyle-enabled t
                   lsp-pylsp-plugins-yapf-enabled t
-                  lsp-prefer-flymake t)))
+                  lsp-prefer-flymake t
+                  lsp-headerline-breadcrumb-enable nil)))
 (use-package lsp-ui :commands lsp-ui-mode)
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
