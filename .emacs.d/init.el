@@ -26,7 +26,7 @@
       (scroll-bar-mode -1)
       (tool-bar-mode -1)
       (set-fringe-mode 10)
-      (set-face-attribute 'default nil :font "JetBrains Mono" :height 150)
+      (set-face-attribute 'default nil :font "JetBrains Mono" :height 140)
       (load-theme 'wombat))
   (xterm-mouse-mode 1)
   (global-set-key [mouse-4] 'scroll-down-line)
