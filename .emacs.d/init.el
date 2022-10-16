@@ -25,7 +25,7 @@
       (scroll-bar-mode -1)
       (tool-bar-mode -1)
       (set-fringe-mode 10)
-      (set-face-attribute 'default nil :font "Fira Code Retina" :height 150))
+      (set-face-attribute 'default nil :font "JetBrains Mono" :height 145))
   (xterm-mouse-mode 1)
   (global-set-key [mouse-4] 'scroll-down-line)
   (global-set-key [mouse-5] 'scroll-up-line))
