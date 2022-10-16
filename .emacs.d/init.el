@@ -17,6 +17,7 @@
       (expand-file-name "tmp/auto-saves/sessions/" user-emacs-directory)
       auto-save-file-name-transforms
       `((".*" ,(expand-file-name "tmp/auto-saves/" user-emacs-directory) t)))
+
 (setq use-dialog-box nil)
 (setq global-auto-revert-non-file-buffers t)
 
@@ -25,7 +26,8 @@
       (scroll-bar-mode -1)
       (tool-bar-mode -1)
       (set-fringe-mode 10)
-      (set-face-attribute 'default nil :font "JetBrains Mono" :height 145))
+      (set-face-attribute 'default nil :font "JetBrains Mono" :height 150)
+      (load-theme 'wombat))
   (xterm-mouse-mode 1)
   (global-set-key [mouse-4] 'scroll-down-line)
   (global-set-key [mouse-5] 'scroll-up-line))
@@ -141,8 +143,7 @@
             (setq lsp-pylsp-plugins-pylint-enabled t
                   lsp-pylsp-plugins-pycodestyle-enabled t
                   lsp-pylsp-plugins-yapf-enabled t
-                  lsp-prefer-flymake t
-                  lsp-headerline-breadcrumb-enable nil)))
+                  lsp-prefer-flymake t)))
 (use-package lsp-ui :commands lsp-ui-mode)
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
@@ -163,6 +164,10 @@
 
 (require 'dap-python)
 
+(use-package evil
+  :config
+  (setq evil-insert-state-cursor 'bar)
+  (evil-mode 1))
 
 ;;;
 (provide 'init)
