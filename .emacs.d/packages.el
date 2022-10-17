@@ -86,6 +86,12 @@
   (dap-python-debugger 'debugpy))
 (require 'dap-python)
 
+(use-package dashboard
+  :config
+  (dashboard-setup-startup-hook)
+  ;; Dashboard does not pops when starting client
+  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))))
+
 ;; (use-package evil
 ;;   :config
 ;;   (setq evil-insert-state-cursor 'bar)
