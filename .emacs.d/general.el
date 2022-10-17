@@ -1,22 +1,3 @@
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-(setq use-dialog-box nil)
-(setq create-lockfiles nil)
-(setq inhibit-startup-message t)
-(setq ring-bell-function 'ignore)
-(setq tab-always-indent 'complete)
-(setq global-auto-revert-non-file-buffers t)
-(setq display-line-numbers 'relative)
-
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-(load-theme 'wombat)
-
-;; (setq recentf-max-menu-items 25)
-;; (setq recentf-max-saved-items 25)
-;; (global-set-key "\C-x\ \C-r" 'recentf-open-files)
-;; (recentf-mode 1)
-;; (setq history-length 25)
-
 ;; Default minor modes
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
@@ -28,6 +9,28 @@
 (savehist-mode 1)
 (save-place-mode 1)
 (set-fringe-mode 10)
+
+;; Buffer-Global variables
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+
+;; Buffer-Local Variables
+(setq use-dialog-box nil)
+(setq create-lockfiles nil)
+(setq inhibit-startup-message t)
+(setq ring-bell-function 'ignore)
+(setq tab-always-indent 'complete)
+(setq global-auto-revert-non-file-buffers t)
+(setq display-line-numbers-type 'relative)
+
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+(load-theme 'wombat)
+
+;; (setq recentf-max-menu-items 25)
+;; (setq recentf-max-saved-items 25)
+;; (global-set-key "\C-x\ \C-r" 'recentf-open-files)
+;; (recentf-mode 1)
+;; (setq history-length 25)
 
 ;; Prevents loading custom file into init.el
 (setq custom-file
