@@ -56,7 +56,9 @@
   (set-face-attribute 'fixed-pitch nil :font "JetBrains Mono" :height efs/default-font-size)
   (set-face-attribute 'variable-pitch nil :font "JetBrains Mono" :height efs/default-font-size :weight 'regular))
 (if (daemonp)
-    (add-hook 'after-make-frame-functions
-              (lambda (frame)
-                (with-selected-frame frame (efs/set-font-faces))))
+    (progn
+      (add-hook 'after-make-frame-functions
+                (lambda (frame)
+                  (with-selected-frame frame (efs/set-font-faces))))
+      (exec-path-from-shell-initialize))
   (efs/set-font-faces))
