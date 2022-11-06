@@ -92,7 +92,7 @@
   ;; Dashboard does not pops when starting client
   (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))))
 
-;; (use-package evil
-;;   :config
-;;   (setq evil-insert-state-cursor 'bar)
-;;   (evil-mode 1))
+(use-package evil
+  :config
+  (setq evil-insert-state-cursor 'bar)
+  (evil-mode 1))
