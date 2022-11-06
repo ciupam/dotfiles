@@ -6,6 +6,8 @@
 (load "~/.emacs.d/packages.el")
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
+(set-variable 'c-file-style "gnu")
+
 (require 'autopair (expand-file-name "~/.emacs.d/lisp/autopair/autopair.el"))
 (autopair-global-mode)
 
