@@ -8,6 +8,7 @@
 (column-number-mode 1)
 (savehist-mode 1)
 (save-place-mode 1)
+(pixel-scroll-precision-mode 1)
 (set-fringe-mode 10)
 
 ;; Buffer-Global variables
@@ -55,10 +56,27 @@
   (set-face-attribute 'default nil :font "JetBrains Mono" :height efs/default-font-size)
   (set-face-attribute 'fixed-pitch nil :font "JetBrains Mono" :height efs/default-font-size)
   (set-face-attribute 'variable-pitch nil :font "JetBrains Mono" :height efs/default-font-size :weight 'regular))
+
 (if (daemonp)
     (progn
       (add-hook 'after-make-frame-functions
                 (lambda (frame)
-                  (with-selected-frame frame (efs/set-font-faces))))
-      (exec-path-from-shell-initialize))
+                  (with-selected-frame frame (efs/set-font-faces)))))
+      ;; (exec-path-from-shell-initialize))
   (efs/set-font-faces))
+
+(add-hook 'python-mode-hook 'eglot-ensure)
+(add-hook 'js-mode-hook 'eglot-ensure)
+(add-hook 'typescript-mode-hook 'eglot-ensure)
+(add-hook 'c++-mode-hook 'eglot-ensure)
+(add-hook 'c-mode-hook 'eglot-ensure)
+
+;; Default keybindigs that drive me mad
+;; By default list-buffers
+(global-set-key (kbd "C-x C-b") 'switch-to-buffer)
+;; By default upcase-region
+(global-set-key (kbd "C-x C-u") 'undo)
+
+;; Specify treesit module dir
+(setq treesit-extra-load-path (expand-file-name "~/bin/tree-sitter-module/dist"))
+(require 'treesit)
