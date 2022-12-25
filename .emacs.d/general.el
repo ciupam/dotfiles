@@ -10,6 +10,7 @@
 (save-place-mode 1)
 (pixel-scroll-precision-mode 1)
 (set-fringe-mode 10)
+(global-hl-line-mode 1)
 
 ;; Buffer-Global variables
 (setq-default indent-tabs-mode nil)
@@ -23,9 +24,13 @@
 (setq tab-always-indent 'complete)
 (setq global-auto-revert-non-file-buffers t)
 (setq display-line-numbers-type 'relative)
+(setq package-native-compile t)
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-(load-theme 'wombat)
+
+;; Theme
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+(load-theme 'jetbrains-darcula t)
 
 ;; (setq recentf-max-menu-items 25)
 ;; (setq recentf-max-saved-items 25)
@@ -62,8 +67,9 @@
       (add-hook 'after-make-frame-functions
                 (lambda (frame)
                   (with-selected-frame frame (efs/set-font-faces)))))
-      ;; (exec-path-from-shell-initialize))
   (efs/set-font-faces))
+
+(exec-path-from-shell-initialize)
 
 (add-hook 'python-mode-hook 'eglot-ensure)
 (add-hook 'js-mode-hook 'eglot-ensure)
@@ -78,5 +84,5 @@
 (global-set-key (kbd "C-x C-u") 'undo)
 
 ;; Specify treesit module dir
-(setq treesit-extra-load-path (expand-file-name "~/bin/tree-sitter-module/dist"))
+(setq treesit-extra-load-path (list (expand-file-name "~/bin/tree-sitter-module/dist")))
 (require 'treesit)
