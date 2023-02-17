@@ -18,6 +18,7 @@
          ;; Don't need listing buffers
          ("C-x C-b" . counsel-ibuffer)
          ("C-x C-f" . counsel-find-file)
+         ("C-x p g" . counsel-git-grep)
          :map minibuffer-local-map
          ("C-r" . 'counsel-minibuffer-history)))
 
