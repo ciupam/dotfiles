@@ -86,3 +86,6 @@
 ;; Specify treesit module dir
 (setq treesit-extra-load-path (list (expand-file-name "~/bin/tree-sitter-module/dist")))
 (require 'treesit)
+
+(setq-default typescript-ts-mode-indent-offset 4)
+
