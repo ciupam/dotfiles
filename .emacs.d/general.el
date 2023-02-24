@@ -71,12 +71,6 @@
 
 (exec-path-from-shell-initialize)
 
-(add-hook 'python-mode-hook 'eglot-ensure)
-(add-hook 'js-mode-hook 'eglot-ensure)
-(add-hook 'typescript-mode-hook 'eglot-ensure)
-(add-hook 'c++-mode-hook 'eglot-ensure)
-(add-hook 'c-mode-hook 'eglot-ensure)
-
 ;; Default keybindigs that drive me mad
 ;; By default list-buffers
 (global-set-key (kbd "C-x C-b") 'switch-to-buffer)
@@ -86,6 +80,20 @@
 ;; Specify treesit module dir
 (setq treesit-extra-load-path (list (expand-file-name "~/bin/tree-sitter-module/dist")))
 (require 'treesit)
+
+;; Remap default major modes with treesit and ensure eglot starts
+(add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
+(add-to-list 'major-mode-remap-alist '(js-mode . js-ts-mode))
+(add-to-list 'major-mode-remap-alist '(typescript-mode . typescript-ts-mode))
+(add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
+(add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
+(add-to-list 'major-mode-remap-alist '(rust-mode . rust-ts-mode))
+(add-hook 'python-ts-mode-hook 'eglot-ensure)
+(add-hook 'js-ts-mode-hook 'eglot-ensure)
+(add-hook 'typescript-ts-mode-hook 'eglot-ensure)
+(add-hook 'c++-ts-mode-hook 'eglot-ensure)
+(add-hook 'c-ts-mode-hook 'eglot-ensure)
+(add-hook 'rust-ts-mode-hook 'eglot-ensure)
 
 (setq-default typescript-ts-mode-indent-offset 4)
 
