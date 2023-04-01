@@ -8,7 +8,8 @@
 
 (set-variable 'c-file-style "gnu")
 
-(require 'autopair (expand-file-name "~/.emacs.d/lisp/autopair/autopair.el"))
+(add-to-list 'load-path "~/.emacs.d/lisp/autopair")
+(require 'autopair)
 (autopair-global-mode)
 
 ;;;
