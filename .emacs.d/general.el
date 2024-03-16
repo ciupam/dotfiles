@@ -11,6 +11,7 @@
 (pixel-scroll-precision-mode 1)
 (set-fringe-mode 10)
 (global-hl-line-mode 1)
+(xterm-mouse-mode 1)
 
 ;; Buffer-Global variables
 (setq-default indent-tabs-mode nil)
@@ -78,22 +79,28 @@
 (global-set-key (kbd "C-x C-u") 'undo)
 
 ;; Specify treesit module dir
-(setq treesit-extra-load-path (list (expand-file-name "~/bin/tree-sitter-module/dist")))
-(require 'treesit)
+;; (setq treesit-extra-load-path (list (expand-file-name "~/bin/tree-sitter-module/dist")))
+;; (require 'treesit)
 
 ;; Remap default major modes with treesit and ensure eglot starts
-(add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
-(add-to-list 'major-mode-remap-alist '(js-mode . js-ts-mode))
-(add-to-list 'major-mode-remap-alist '(typescript-mode . typescript-ts-mode))
-(add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
-(add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
-(add-to-list 'major-mode-remap-alist '(rust-mode . rust-ts-mode))
-(add-hook 'python-ts-mode-hook 'eglot-ensure)
-(add-hook 'js-ts-mode-hook 'eglot-ensure)
-(add-hook 'typescript-ts-mode-hook 'eglot-ensure)
-(add-hook 'c++-ts-mode-hook 'eglot-ensure)
-(add-hook 'c-ts-mode-hook 'eglot-ensure)
-(add-hook 'rust-ts-mode-hook 'eglot-ensure)
+;; (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
+;; (add-to-list 'major-mode-remap-alist '(js-mode . js-ts-mode))
+;; (add-to-list 'major-mode-remap-alist '(typescript-mode . typescript-ts-mode))
+;; (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
+;; (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
+;; (add-to-list 'major-mode-remap-alist '(rust-mode . rust-ts-mode))
+;; (add-to-list 'major-mode-remap-alist '(html-mode . angular-mode))
+(add-hook 'python-mode-hook 'eglot-ensure)
+(add-hook 'js-mode-hook 'eglot-ensure)
+(add-hook 'typescript-mode-hook 'eglot-ensure)
+(add-hook 'c++-mode-hook 'eglot-ensure)
+(add-hook 'c-mode-hook 'eglot-ensure)
+(add-hook 'rust-mode-hook 'eglot-ensure)
 
 (setq-default typescript-ts-mode-indent-offset 4)
+
+;; Jump to source keybind
+(add-hook 'c-mode-common-hook
+  (lambda() 
+    (local-set-key  (kbd "C-c o") 'ff-find-other-file)))
 
