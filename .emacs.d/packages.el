@@ -12,16 +12,13 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
-(use-package which-key
-    :config
-    (which-key-mode))
-
 (use-package counsel
   :bind (("M-x" . counsel-M-x)
          ("C-x b" . counsel-ibuffer)
          ;; Don't need listing buffers
          ("C-x C-b" . counsel-ibuffer)
          ("C-x C-f" . counsel-find-file)
+         ("C-x p g" . counsel-git-grep)
          :map minibuffer-local-map
          ("C-r" . 'counsel-minibuffer-history)))
 
@@ -52,47 +49,40 @@
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
-(use-package lsp-mode
-  :init
-  (setq lsp-keymap-prefix "C-c l")
-  :hook (
-         (js-mode . lsp-deferred)
-         (typescript-mode . lsp-deferred)
-         (lsp-mode . lsp-enable-which-key-integration)
-         (rustic-mode . lsp-deferred)
-         (c++-mode . lsp-deferred))
-  :commands (lsp lsp-deferred)
-  :config (progn
-            (setq lsp-pylsp-plugins-pylint-enabled t
-                  lsp-pylsp-plugins-pycodestyle-enabled t
-                  lsp-pylsp-plugins-yapf-enabled t
-                  lsp-prefer-flymake t)))
-(use-package lsp-ui :commands lsp-ui-mode)
-(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
-
-(use-package dap-mode
+(use-package which-key
   :config
-  (setq dap-auto-configure-features '(sessions locals controls tooltip)))
+  (which-key-mode))
 
-(use-package rustic)
+;; (use-package lsp-mode
+;;   :init
+;;   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+;;   (setq lsp-keymap-prefix "C-c l")
+;;   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+;;          ;; (python-mode . lsp-enable-which-key-integration)
+;;          (js-mode . lsp-enable-which-key-integration)
+;;          (typescript-mode . lsp-enable-which-key-integration)
+;;          (c-mode . lsp-enable-which-key-integration)
+;;          (c++-mode . lsp-enable-which-key-integration)
+;;          ;; if you want which-key integration
+;;          (lsp-mode . lsp-enable-which-key-integration))
+;;   :commands lsp)
 
-(use-package python-mode
-  :ensure t
-  :hook (python-mode . lsp-deferred)
-  :custom
-  (python-shell-interpreter "python3")
-  (dap-python-executable "python3")
-  (dap-python-debugger 'debugpy))
-(require 'dap-python)
+;; ;; optionally
+;; (use-package lsp-ui :commands lsp-ui-mode)
+;; ;; if you are helm user
+;; ;; (use-package helm-lsp :commands helm-lsp-workspace-symbol)
+;; ;; if you are ivy user
+;; (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+;; (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 
-(use-package dashboard
-  :config
-  (dashboard-setup-startup-hook)
-  ;; Dashboard does not pops when starting client
-  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))))
+;; ;; optionally if you want to use debugger
+;; (use-package dap-mode)
+;; ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
 
-(use-package evil
-  :config
-  (setq evil-insert-state-cursor 'bar)
-  (evil-mode 1))
+;; (use-package lsp-pyright
+;;   :ensure t
+;;   :hook (python-mode . (lambda ()
+;;                           (require 'lsp-pyright)
+;;                           (lsp-enable-which-key-integration))))  ; or lsp-deferred
+
+(use-package org)

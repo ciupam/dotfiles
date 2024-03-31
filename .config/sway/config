@@ -1,0 +1,79 @@
+include /etc/sway/config
+
+input type:keyboard {
+# See /usr/share/X11/xkb/rules/xorg.lst for options
+xkb_options caps:ctrl_modifier
+repeat_delay 250
+repeat_rate 45
+}
+
+input * xkb_layout "pl"
+
+input 2:7:SynPS/2_Synaptics_TouchPad {
+dwt enabled
+tap enabled
+natural_scroll enabled
+middle_emulation enabled
+}
+
+# bindsym --no-repeat Ctrl+Print exec gdbus call -e -d net.sourceforge.mumble.mumble -o / -m net.sourceforge.mumble.Mumble.startTalking
+# bindsym --no-repeat --release Ctrl+Print exec gdbus call -e -d net.sourceforge.mumble.mumble -o / -m net.sourceforge.mumble.Mumble.stopTalking
+
+# Notification Daemon
+exec swaync
+
+# Toggle control center
+bindsym $mod+Shift+n exec swaync-client -t -sw
+
+# Custom Shortcuts
+bindsym Ctrl+Mod1+e exec emacsclient --create-frame --alternate-editor=""
+
+set $bg ~/.config/wall.png
+set $lock_bg ~/.config/pxfuel.jpg
+output * bg $bg fill
+bindsym $mod+End exec swaylock -i $lock_bg
+# bindsym Print exec grim screenshot.png
+
+exec swayidle -w \
+timeout 300 'swaylock -f -c 000000 -i $lock_bg' \
+timeout 600 'swaymsg "output * dpms off"' \
+resume 'swaymsg "output * dpms on"' \
+before-sleep 'swaylock -f -c 000000 -i $lock_bg'
+
+# Define outputs
+set $output-primary eDP-1
+set $output-secondary DP-5
+workspace 1 output $output-secondary
+workspace 2 output $output-secondary
+workspace 3 output $output-secondary
+workspace 4 output $output-secondary
+
+
+workspace 5 output $output-primary
+workspace 6 output $output-primary
+workspace 7 output $output-primary
+workspace 8 output $output-primary
+
+workspace 1
+exec $term
+workspace 2
+exec firefox
+default_border none
+default_floating_border none
+font pango:monospace 0
+titlebar_padding 1
+titlebar_border_thickness 0
+
+bar {
+    position top
+    # Keep in mind that the current directory of this config file is $HOME
+    status_command while ~/.config/sway/status.sh; do sleep 1; done
+
+    colors {
+        # Text color of status bar
+        statusline #ffffff
+        # Background of status bar
+        background #323232
+    }
+    font pango:DejaVu Sans Mono 10
+}
