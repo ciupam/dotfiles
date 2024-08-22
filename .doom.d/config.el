@@ -34,7 +34,7 @@
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-one)
 
-(setq doom-font (font-spec :family "JetBrains Mono" :size 16 :weight 'medium))
+(setq doom-font (font-spec :family "JetBrains Mono" :size 20 :weight 'medium))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -78,6 +78,30 @@
 ;; they are implemented.
 
 (projectile-discover-projects-in-directory "~/bin" 1)
-(pixel-scroll-precision-mode 1)
-(eval-after-load 'evil-core
-  '(evil-set-initial-state 'magit-popup-mode 'emacs))
+(electric-pair-mode 1)
+;; (pixel-scroll-precision-mode 1)
+;; (eval-after-load 'evil-core
+;;   '(evil-set-initial-state 'magit-popup-mode 'emacs))
+
+;; (after! lsp-mode
+;;   (setq lsp-file-watch-threshold 1000)
+;;   (setq lsp-enable-file-watchers nil))
+
+(after! dap-mode
+  (require 'dap-cpptools))
+
+(unless (display-graphic-p)
+  (xterm-mouse-mode 1))
+
+(after! typescript-mode
+  (setq typescript-indent-level 4))
+
+(after! lsp-mode
+  (setq lsp-enable-file-watchers nil))
+
+;; (after! lsp-ui
+;;   (setq lsp-ui-doc-enable t)
+;;   (setq lsp-ui-doc-show-with-cursor t))
+
+(after! dap-mode
+  (setq dap-python-debugger 'debugpy))

@@ -14,9 +14,9 @@
 
 (use-package counsel
   :bind (("M-x" . counsel-M-x)
-         ("C-x b" . counsel-ibuffer)
+         ("C-x b" . counsel-buffer-or-recentf)
          ;; Don't need listing buffers
-         ("C-x C-b" . counsel-ibuffer)
+         ("C-x C-b" . counsel-buffer-or-recentf)
          ("C-x C-f" . counsel-find-file)
          ("C-x p g" . counsel-git-grep)
          :map minibuffer-local-map
@@ -86,3 +86,10 @@
 ;;                           (lsp-enable-which-key-integration))))  ; or lsp-deferred
 
 (use-package org)
+
+(use-package direnv
+  :config
+  (direnv-mode))
+
+(use-package pipenv
+  :hook (python-mode . pipenv-mode))

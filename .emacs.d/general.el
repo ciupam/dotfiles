@@ -24,6 +24,7 @@
 (setq ring-bell-function 'ignore)
 (setq tab-always-indent 'complete)
 (setq global-auto-revert-non-file-buffers t)
+(setq auto-revert-use-notify nil)
 (setq display-line-numbers-type 'relative)
 (setq package-native-compile t)
 
@@ -73,8 +74,6 @@
 (exec-path-from-shell-initialize)
 
 ;; Default keybindigs that drive me mad
-;; By default list-buffers
-(global-set-key (kbd "C-x C-b") 'switch-to-buffer)
 ;; By default upcase-region
 (global-set-key (kbd "C-x C-u") 'undo)
 
